@@ -41,7 +41,7 @@ export function activate(context: vscode.ExtensionContext) {
         version: "0.0.0",
         author: "https://github.com/undefinedofficial",
         license: "MIT",
-        repository: "https://github.com/undefinedofficial/u-copyright.git",
+        repository: "",
         ...(packageJsonStr || {}),
       };
     }
@@ -84,6 +84,9 @@ export function activate(context: vscode.ExtensionContext) {
   // The commandId parameter must match the command field in package.json
   let disposable = vscode.commands.registerCommand("u-copyright.insert-copyright", async () => {
     vscode.window.activeTextEditor?.edit((editBuilder) => {
+      const filename = vscode.window.activeTextEditor?.document.fileName;
+      if (!filename?.endsWith(".ts") && !filename?.endsWith(".js")) return;
+
       const text = vscode.window.activeTextEditor?.document.getText(new vscode.Range(0, 0, 7, 0));
       if (text === undefined) return;
 
